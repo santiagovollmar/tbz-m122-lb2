@@ -1,0 +1,31 @@
+id: 22001
+account: A003
+city: Zürich
+timestamp: 2020-02-03T22:33:54
+target_deadline: P30D
+recipient:
+  id: K821
+  company: Firma R
+  human: Ruis Rechberger
+  street: Rudolfstrasse 1
+  city: Rudolfstetten
+  zip: 8933
+  vat_id: CHE-111.222.333
+  email: harald.mueller@tbz.ch
+sender:
+  id: 41301000000012497
+  company: RATSIM AG
+  street: Rainstrasse 100
+  city: Rupperswil
+  zip: 5245
+items:
+  - description: Einrichten E-Mailclients
+    count: 5
+    price: 25.00
+    total: 125.00
+    vat_multiplier: 0
+  - description: Konfig & Schulung Scanningcnter
+    count: 1
+    price: 1000.00
+    total: 1000.00
+    vat_multiplier: 0

@@ -1,0 +1,33 @@
+locations:
+  data_scan:
+    server: in_server
+    path: /out/AP17bVollmar
+    pattern: rechnung[0-9]+.data
+  receipt_scan:
+    server: out_server
+    path: /out/AP17bVollmar
+    pattern: quittungsfile[0-9_]+\.txt
+  invoice_push:
+    server: out_server
+    path: /in/AP17bVollmar
+  archive_push:
+    server: in_server
+    path: /in/AP17bVollmar
+
+ftp:
+  in_server:
+    host: ftp.haraldmueller.ch
+    username: schoolerinvoices
+    password: !env FTP_PASS
+    secure: false
+  out_server:
+    host: 134.119.225.245
+    username: 310721-297-zahlsystem
+    password: !env FTP_PASS
+    secure: true
+
+email:
+  hostname: smtp.mail.ch
+  port: 465
+  username: m122_vollmer@mail.ch
+  password: !env EMAIL_PASS

@@ -1,0 +1,8 @@
+Sehr geehrte/r {{ recipient.human }}
+
+Am {{ timestamp.strftime('%d.%m.%Y') }} um {{ timestamp.strftime('%H:%M:%S') }} wurde die erfolgreiche Bearbeitung der Rechnung {{ id }} vom Zustellsystem 134.119.225.245 gemeldet.
+
+Mit freundlichen Grüssen
+
+Santiago Gabriel Vollmar <m122_vollmer@mail.ch>
+{{ sender.company }}

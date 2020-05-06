@@ -1,0 +1,18 @@
+# IDE/editor files
+*.swp
+*.un~
+*~
+.idea
+.vscode
+*.code-workspace
+
+# build files
+dist/
+*.pyc
+*.egg-info
+
+# venv
+venv/
+
+# log files
+*.log

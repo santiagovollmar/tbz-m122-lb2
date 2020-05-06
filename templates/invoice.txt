@@ -1,0 +1,64 @@
+Vorgabe des Dateinamens: K123_21003_invoice.txt
+
+
+
+{% for line in recipient.yield_address_lines() %}
+{{ line }}
+{% endfor %}
+
+
+
+
+{{ (city + ', dem ' + timestamp.strftime('%d.%m.%Y'))|fill(49)  }}{{ sender.yield_address_lines()|join('\n')|indent(49) }}
+
+
+Kundennummer:      {{ recipient.id }}
+Auftragsnummer:    {{ account }}
+
+Rechnung Nr       {{ id }}
+------------------{{ '-' * (id|length) }}
+{% for idx, item in items|enumerate %}
+  {{ (idx + 1)|fill(4) }}{{ item.description|fill(35) }}{{ item.count|lfill(3) }}{{ item.price|chf(14) }}{{ item.total|chf(14) }}{{ '{:7.2f}%'.format(item.vat_multiplier*100) }}
+{% endfor %}
+{{ ' ' * (2+4+35+3+14+3) }}{{ '-' * 11 }}
+{{ ' ' * (2+4+35+3+14-16) }}{{ 'Total exkl. MWST'|fill(16) }}{{ items|lmap('e.total')|sum|chf(14) }}
+{{ ' ' * (2+4+35+3+14-16) }}{{ 'MWST'|fill(16) }}{{ items|lmap('e.total * e.vat_multiplier')|sum|chf(14) }}
+
+{{ ' ' * (2+4+35+3+14-16) }}{{ 'Total inkl. MWST'|fill(16) }}{{ items|lmap('e.total + e.total * e.vat_multiplier')|sum|chf(14) }}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Zahlungsziel ohne Abzug {{ target_deadline.days }} Tage ({{ (timestamp + target_deadline).strftime('%d.%m.%Y') }})
+
+Einzahlungsschein
+
+
+
+
+
+
+
+
+
+
+
+{{ '{n}{w}{n}'.format(w=(' '*16), n='{:11.2f}'.format((items|lmap('e.total + e.total * e.vat_multiplier')|sum) / 100).replace('.', ' . '))|fill(47) }}{{ sender.company }}
+{{ ' '*47 }}{{ sender.street }}
+{{ '0 00000 00000 00000'|fill(47) }}{{ sender.zip }} {{ sender.city }}
+
+
+{% for line in sender.yield_address_lines() %}
+{{ line }}
+{% endfor %}

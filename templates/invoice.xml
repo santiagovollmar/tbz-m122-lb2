@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<Invoice version="3.1" doctype="ETS Invoice">
+<Invoice_Header>
+    <I.H.010_Basisdaten>
+        <BV.010_Rechnungsnummer>{{ id }}</BV.010_Rechnungsnummer>
+        <BV.020_Rechnungsdatum>{{ timestamp.isoformat() }}</BV.020_Rechnungsdatum>
+        <BV.030_Funktion_des_Dokuments>Original</BV.030_Funktion_des_Dokuments>
+        <BV.040_Typ_des_Dokuments>Rechnung</BV.040_Typ_des_Dokuments>
+        <BV.050_Rechnungs_Endkennzeichen>vollstaendige Rechnung</BV.050_Rechnungs_Endkennzeichen>
+        <BV.060_Bestellnummer_des_Kaeufers/>
+        <BV.080_Waehrung>CHF</BV.080_Waehrung>
+        <BV.090_Sprache>de</BV.090_Sprache>
+    </I.H.010_Basisdaten>
+    <I.H.020_Einkaeufer_Identifikation>
+        <BV.010_Nr_Kaeufer_beim_Lieferanten>n/a</BV.010_Nr_Kaeufer_beim_Lieferanten>
+        <BV.020_Nr_Kaeufer_beim_Kaeufer>{{ recipient.id }}</BV.020_Nr_Kaeufer_beim_Kaeufer>
+        <BV.030_Nr_Kaeufer_bei_ETS>n/a</BV.030_Nr_Kaeufer_bei_ETS>
+        <BV.035_Typ_der_Handelsplatz_ID>TPID</BV.035_Typ_der_Handelsplatz_ID>
+        <BV.040_Name1>{{ recipient.company }}</BV.040_Name1>
+        <BV.100_PLZ>{{ recipient.zip }}</BV.100_PLZ>
+        <BV.110_Stadt>{{ recipient.city }}</BV.110_Stadt>
+        <BV.120_Land>CH</BV.120_Land>
+    </I.H.020_Einkaeufer_Identifikation>
+    <I.H.030_Lieferanten_Identifikation>
+        <BV.010_Nr_Lieferant_beim_Kaeufer>n/a</BV.010_Nr_Lieferant_beim_Kaeufer>
+        <BV.030_Nr_Lieferant_bei_ETS>{{ sender.id }}</BV.030_Nr_Lieferant_bei_ETS>
+        <BV.040_Name1>{{ sender.company }}</BV.040_Name1>
+        <BV.070_Strasse>{{ sender.street }}</BV.070_Strasse>
+        <BV.100_PLZ>{{ sender.zip }}</BV.100_PLZ>
+        <BV.110_Stadt>{{ sender.city }}</BV.110_Stadt>
+        <BV.120_Land>CH</BV.120_Land>
+    </I.H.030_Lieferanten_Identifikation>
+    <I.H.040_Rechnungsadresse>
+        <BV.040_Name1>{{ recipient.human }}</BV.040_Name1>
+        <BV.100_PLZ>{{ recipient.zip }}</BV.100_PLZ>
+        <BV.110_Stadt>{{ recipient.city }}</BV.110_Stadt>
+        <BV.120_Land>CH</BV.120_Land>
+    </I.H.040_Rechnungsadresse>
+    <I.H.080_Zahlungsbedingungen>
+        <BV.010_Zahlungsbedingungen>Faelligkeitsdatum</BV.010_Zahlungsbedingungen>
+        <BV.020_Zahlungsbedingungen_Zusatzwert>{{ (timestamp + target_deadline).isoformat() }}</BV.020_Zahlungsbedingungen_Zusatzwert>
+    </I.H.080_Zahlungsbedingungen>
+    <I.H.140_MwSt._Informationen>
+        <BV.010_Eingetragener_Name_des_Lieferanten>{{ sender.company }}</BV.010_Eingetragener_Name_des_Lieferanten>
+        <BV.020_MwSt_Nummer_des_Lieferanten>n/a</BV.020_MwSt_Nummer_des_Lieferanten>
+    </I.H.140_MwSt._Informationen>
+</Invoice_Header>
+<Invoice_Detail>
+<Invoice_Items>
+{% for idx, item in items|enumerate %}
+    <I.D.010_Basisdaten>
+    <BV.010_Positions_Nr_in_der_Rechnung>{{ idx + 1 }}</BV.010_Positions_Nr_in_der_Rechnung>
+    <BV.020_Artikel_Nr_des_Lieferanten>n/a</BV.020_Artikel_Nr_des_Lieferanten>
+    <BV.070_Artikel_Beschreibung>{{ item.description }}</BV.070_Artikel_Beschreibung>
+    <BV.140_Abschlussdatum_der_Lieferung_Ausfuehrung>{{ timestamp }}</BV.140_Abschlussdatum_der_Lieferung_Ausfuehrung>
+    </I.D.010_Basisdaten>
+    <I.D.020_Preise_und_Mengen>
+    <BV.010_Verrechnete_Menge>1</BV.010_Verrechnete_Menge>
+    <BV.020_Mengeneinheit_der_verrechneten_Menge>BLL</BV.020_Mengeneinheit_der_verrechneten_Menge>
+    <BV.030_Verrechneter_Einzelpreis_des_Artikels>{{ item.price / 100 }}</BV.030_Verrechneter_Einzelpreis_des_Artikels>
+    <BV.040_Waehrung_des_Einzelpreises>CHF</BV.040_Waehrung_des_Einzelpreises>
+    <BV.070_Bestaetigter_Gesamtpreis_der_Position_netto>{{ item.total / 100 }}</BV.070_Bestaetigter_Gesamtpreis_der_Position_netto>
+    <BV.080_Bestaetigter_Gesamtpreis_der_Position_brutto>{{ (item.total + item.total * item.vat_multiplier) / 100}}</BV.080_Bestaetigter_Gesamtpreis_der_Position_brutto>
+    <BV.090_Waehrung_des_Gesamtpreises>CHF</BV.090_Waehrung_des_Gesamtpreises>
+    </I.D.020_Preise_und_Mengen>
+    <I.D.030_Steuern>
+    <BV.010_Funktion_der_Steuer>Steuer</BV.010_Funktion_der_Steuer>
+    <BV.020_Steuersatz_Kategorie>Standard Satz</BV.020_Steuersatz_Kategorie>
+    <BV.030_Steuersatz>{{ item.vat_multiplier * 100 }}</BV.030_Steuersatz>
+    <BV.040_Zu_versteuernder_Betrag>{{ item.total / 100 }}</BV.040_Zu_versteuernder_Betrag>
+    <BV.050_Steuerbetrag>{{ item.total * item.vat_multiplier / 100 }}</BV.050_Steuerbetrag>
+    </I.D.030_Steuern>
+{% endfor %}
+</Invoice_Items>
+</Invoice_Detail>
+<Invoice_Summary>
+    <I.S.010_Basisdaten>
+        <BV.010_Anzahl_der_Rechnungspositionen>{{ items|length }}</BV.010_Anzahl_der_Rechnungspositionen>
+        <BV.020_Gesamtbetrag_der_Rechnung_exkl_MwSt_exkl_Ab_Zuschlag>{{ items|lmap('e.total')|sum / 100 }}</BV.020_Gesamtbetrag_der_Rechnung_exkl_MwSt_exkl_Ab_Zuschlag>
+        <BV.030_Waehrung_Gesamtbetrag_der_Rechnung_exkl_MwSt_exkl_Ab_Zuschlag>CHF</BV.030_Waehrung_Gesamtbetrag_der_Rechnung_exkl_MwSt_exkl_Ab_Zuschlag>
+        <BV.040_Gesamtbetrag_der_Rechnung_exkl_MwSt_inkl_Ab_Zuschlag>{{ items|lmap('e.total')|sum / 100 }}</BV.040_Gesamtbetrag_der_Rechnung_exkl_MwSt_inkl_Ab_Zuschlag>
+        <BV.050_Waehrung_Gesamtbetrag_der_Rechnung_exkl_MwSt_inkl_Ab_Zuschlag>CHF</BV.050_Waehrung_Gesamtbetrag_der_Rechnung_exkl_MwSt_inkl_Ab_Zuschlag>
+        <BV.060_Steuerbetrag>{{ items|lmap('e.total * e.vat_multiplier')|sum / 100 }}</BV.060_Steuerbetrag>
+        <BV.070_Waehrung_des_Steuerbetrags>CHF</BV.070_Waehrung_des_Steuerbetrags>
+        <BV.080_Gesamtbetrag_der_Rechnung_inkl_MwSt_inkl_Ab_Zuschlag>{{ items|lmap('e.total + e.total * e.vat_multiplier')|sum / 100 }}</BV.080_Gesamtbetrag_der_Rechnung_inkl_MwSt_inkl_Ab_Zuschlag>
+        <BV.090_Waehrung_Gesamtbetrag_der_Rechnung_inkl_MwSt_inkl_Ab_Zuschlag>CHF</BV.090_Waehrung_Gesamtbetrag_der_Rechnung_inkl_MwSt_inkl_Ab_Zuschlag>
+    </I.S.010_Basisdaten>
+    <I.S.020_Aufschluesselung_der_Steuern>
+        <BV.010_Funktion_der_Steuer>Steuer</BV.010_Funktion_der_Steuer>
+        <BV.020_Steuersatz_Kategorie>Standard Satz</BV.020_Steuersatz_Kategorie>
+        <BV.030_Steuersatz>n/a</BV.030_Steuersatz>
+        <BV.040_Zu_versteuernder_Betrag>{{ items|lmap('e.total')|sum / 100 }}</BV.040_Zu_versteuernder_Betrag>
+        <BV.050_Steuerbetrag>{{ items|lmap('e.total * e.vat_multiplier')|sum / 100 }}</BV.050_Steuerbetrag>
+        <BV.055_Waehrung_Steuerbetrag>CHF</BV.055_Waehrung_Steuerbetrag>
+    </I.S.020_Aufschluesselung_der_Steuern>
+</Invoice_Summary>
+</Invoice>

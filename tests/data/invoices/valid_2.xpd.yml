@@ -1,0 +1,26 @@
+id: R0
+account: A420
+city: London
+timestamp: 2020-04-20T04:20:20
+target_deadline: +P42DT00H00M00S
+recipient:
+  id: K420
+  company: E-Corp
+  human: Phillip Price
+  street: Wallstreet 420
+  city: New Fucking York
+  zip: 420
+  vat_id: CHE-420.420.420
+  email: phillip.price@ecorp.com
+sender:
+  id: DOOM
+  company: F-Society
+  street: Undisclosed ??
+  city: Cony Island
+  zip: 422
+items:
+  - description: Encryption Keys
+    count: 1
+    price: 21000000
+    total: 21000000
+    vat_multiplier: 0.042
